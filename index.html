@@ -132,12 +132,12 @@
     </div>
   </div>
   <script>
-    const configs=[
-      {id:'nh3',title:'氨氮',fields:[{l:'空白 x',k:'x'},{l:'滴定值 y',k:'y'},{l:'体积 v',k:'v'}],f:({x,y,v})=>{let A=y-x,B=(A*300.82-5.5691)/v;return`空白——滴定值=${A.toFixed(3)}, 计算结果=${B.toFixed(2)}`;}},
-      {id:'tn',title:'总氮',fields:[{l:'空白220nm A',k:'A'},{l:'空白275nm B',k:'B'},{l:'滴定值 C',k:'C'},{l:'滴定值 D',k:'D'}],f:({A,B,C,D})=>{let X=C-A-2*(D-B),Y=X*136.18-0.6683;return`A1-A2=${X.toFixed(3)}, 计算结果=${Y.toFixed(2)}`;}},
-      {id:'tp',title:'总磷',fields:[{l:'空白 x',k:'x'},{l:'滴定值 y',k:'y'},{l:'体积 v',k:'v'}],f:({x,y,v})=>{let A=y-x,B=(A*90.5544-0.0133)/v;return`空白——滴定值=${A.toFixed(3)}, 计算结果=${B.toFixed(2)}`;}},
-      {id:'cod-in',title:'COD（进水）',fields:[{l:'空白值 A',k:'A'},{l:'滴定值 B',k:'B'}],f:({A,B})=>{let X=A-B,Y=X*39.22;return`空白——滴定值=${X.toFixed(2)}, 计算结果=${Y.toFixed(1)}`;}},
-      {id:'cod-out',title:'COD（出水）',fields:[{l:'空白值 A',k:'A'},{l:'滴定值 B',k:'B'}],f:({A,B})=>{let X=A-B,Y=X*4.05;return`空白——滴定值=${X.toFixed(2)}, 计算结果=${Y.toFixed(2)}`;}}
+   const configs=[
+      {id:'nh3',title:'氨氮',fields:[{l:'空白 x',k:'x'},{l:'结果 y',k:'y'},{l:'体积 v',k:'v'}],f:({x,y,v})=>{let A=(y*v+5.5691)/300.82,B=A+x;return`空白-滴定值=${A.toFixed(3)}, 滴定值=${B.toFixed(3)}`;}},
+      {id:'tn',title:'总氮',fields:[{l:'空白220nm A',k:'A'},{l:'空白275nm B',k:'B'},{l:'结果 C',k:'C'},{l:'滴定值 D',k:'D'}],f:({A,B,C,D})=>{let X=(C+0.6683)/136.18,Y=X+2*(D-B)+A;return`A1-A2=${X.toFixed(3)}, 220滴定值=${Y.toFixed(3)}`;}},
+      {id:'tp',title:'总磷',fields:[{l:'空白 x',k:'x'},{l:'结果 y',k:'y'},{l:'体积 v',k:'v'}],f:({x,y,v})=>{let A=(y*v+0.0133)/90.5544,B=A+x;return`空白——滴定值=${A.toFixed(3)}, 滴定值=${B.toFixed(3)}`;}},
+      {id:'cod-in',title:'COD（进水）',fields:[{l:'空白值 A',k:'A'},{l:'结果 B',k:'B'}],f:({A,B})=>{let X=B/39.22,Y=A-X;return`空白——滴定值=${X.toFixed(1)}, 滴定值=${Y.toFixed(1)}`;}},
+      {id:'cod-out',title:'COD（出水）',fields:[{l:'空白值 A',k:'A'},{l:'结果 B',k:'B'}],f:({A,B})=>{let X=B/4.05,Y=A-X;return`空白——滴定值=${X.toFixed(1)}, 滴定值=${Y.toFixed(1)}`;}}
     ];
     window.onload=()=>{configs.forEach(c=>{const cont=document.getElementById(c.id+'-card'),tmpl=document.getElementById('card-template').content.cloneNode(true);tmpl.querySelector('h2').innerText=c.title;const ips=tmpl.querySelector('.inputs'),btn=tmpl.querySelector('button'),res=tmpl.querySelector('.result');c.fields.forEach(f=>{let lbl=document.createElement('label');lbl.innerHTML=`<span>${f.l}</span><input type="number" id="${c.id}-${f.k}" step="any" placeholder="请输入">`;ips.appendChild(lbl);});btn.onclick=()=>{let vals={};c.fields.forEach(f=>vals[f.k]=parseFloat(document.getElementById(c.id+'-'+f.k).value)||0);res.innerText=c.f(vals);};cont.appendChild(tmpl);});};
   </script>
